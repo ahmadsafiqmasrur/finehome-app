@@ -13,7 +13,7 @@ class FixyIndonesiaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Fixy Indonesia - Jasa Tukang & Teknisi Rumah On-Demand',
+      title: 'FineHome - Jasa Tukang & Teknisi Rumah On-Demand',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: appRouter,
