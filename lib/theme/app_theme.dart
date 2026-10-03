@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Brand Colors
-  static const Color primary = Color(0xFF0175C2);       // Biru Fixy
+  static const Color primary = Color(0xFF0175C2);       // Biru FineHome
   static const Color primaryDark = Color(0xFF01528A);
   static const Color primaryLight = Color(0xFFE6F3FB);
   static const Color secondary = Color(0xFF00A86B);     // Hijau Sukses / Mitra Terverifikasi

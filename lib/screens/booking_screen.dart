@@ -7,25 +7,21 @@ import '../theme/app_theme.dart';
 
 class BookingScreen extends StatefulWidget {
   final String serviceId;
-  final String? initialProfessionalId;
-
-  const BookingScreen({
-    super.key,
-    required this.serviceId,
-    this.initialProfessionalId,
-  });
+  final String? proId;
+  const BookingScreen({super.key, required this.serviceId, this.proId});
 
   @override
   State<BookingScreen> createState() => _BookingScreenState();
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  late ServiceItem _service;
-  late Professional _selectedProfessional;
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
-  String _selectedTimeSlot = IndonesiaData.timeSlots[0];
+  String _selectedTimeSlot = IndonesiaData.timeSlots[1];
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
+
+  late ServiceItem _service;
+  Professional? _selectedProfessional;
 
   @override
   void initState() {
@@ -35,61 +31,54 @@ class _BookingScreenState extends State<BookingScreen> {
       orElse: () => IndonesiaData.services[0],
     );
 
-    if (widget.initialProfessionalId != null) {
-      _selectedProfessional = IndonesiaData.professionals.firstWhere(
-        (p) => p.id == widget.initialProfessionalId,
-        orElse: () => IndonesiaData.professionals[0],
-      );
-    } else {
-      _selectedProfessional = IndonesiaData.professionals[0];
-    }
-
     _addressController.text = AppState().userAddress;
+    _selectedProfessional = IndonesiaData.professionals[0];
+  }
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    _notesController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.background,
       appBar: AppBar(
         title: const Text('Jadwalkan Layanan'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Ringkasan Layanan
+            // Kartu Ringkasan Layanan
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppTheme.primaryLight.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.border),
+                border: Border.all(color: AppTheme.primary.withValues(alpha: 0.2)),
               ),
               child: Row(
                 children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryLight,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(Icons.handyman_rounded, color: AppTheme.primary),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(_service.imageUrl, width: 60, height: 60, fit: BoxFit.cover),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          _service.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        ),
+                        Text(_service.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                        const SizedBox(height: 2),
+                        Text('Estimasi Pengerjaan: ${_service.duration}', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                        const SizedBox(height: 4),
                         Text(
                           IndonesiaData.formatRupiah(_service.price),
-                          style: const TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 13),
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.primary),
                         ),
                       ],
                     ),
@@ -98,7 +87,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
             // Pilih Tanggal
             const Text(
@@ -175,7 +164,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
             const SizedBox(height: 20),
 
-            // Alamat Lengkap di Indonesia
+            // Alamat Lengkap
             const Text(
               'Alamat Rumah / Lokasi Pengerjaan',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
@@ -203,52 +192,6 @@ class _BookingScreenState extends State<BookingScreen> {
               maxLines: 2,
               decoration: const InputDecoration(
                 hintText: 'Misal: Mohon bawa tangga lipat, AC di lantai 2, atau toren di dak atas.',
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Pilihan Teknisi Mitra
-            const Text(
-              'Pilih Mitra Teknisi',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppTheme.border),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<Professional>(
-                  isExpanded: true,
-                  value: _selectedProfessional,
-                  items: IndonesiaData.professionals.map((pro) {
-                    return DropdownMenuItem<Professional>(
-                      value: pro,
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 14,
-                            backgroundImage: NetworkImage(pro.avatarUrl),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              '${pro.name} (${pro.rating} ★ - ${pro.city})',
-                              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (pro) {
-                    if (pro != null) setState(() => _selectedProfessional = pro);
-                  },
-                ),
               ),
             ),
 
@@ -282,7 +225,6 @@ class _BookingScreenState extends State<BookingScreen> {
               height: 48,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to Payment
                   context.push(
                     '/payment',
                     extra: {

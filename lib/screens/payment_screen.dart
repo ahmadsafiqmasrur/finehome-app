@@ -1,3 +1,4 @@
+﻿import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,8 +8,8 @@ import '../services/app_state.dart';
 import '../theme/app_theme.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final Map<String, dynamic> bookingDetails;
-  const PaymentScreen({super.key, required this.bookingDetails});
+  final Map<String, dynamic> bookingData;
+  const PaymentScreen({super.key, required this.bookingData});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -18,70 +19,133 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String _selectedMethodId = 'qris';
   bool _isProcessing = false;
 
+  void _showSearchingDialogAndRedirect(Booking newBooking) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 70,
+                    height: 70,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 4,
+                      color: AppTheme.primary,
+                      backgroundColor: AppTheme.primary.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  const Icon(Icons.build_circle_rounded, size: 36, color: AppTheme.primary),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Pembayaran Berhasil!',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF10B981)),
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'Sistem sedang mencocokkan teknisi terdekat di sekitar lokasi Anda...',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        );
+      },
+    );
+
+    // Timer 3 detik lalu redirect ke Peta
+    Timer(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pop(context); // Tutup dialog
+        context.go('/map'); // Redirect ke Peta!
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ServiceItem service = widget.bookingDetails['service'];
-    final Professional pro = widget.bookingDetails['professional'];
-    final DateTime scheduledDate = widget.bookingDetails['scheduledDate'];
-    final String timeSlot = widget.bookingDetails['timeSlot'];
-    final String address = widget.bookingDetails['address'];
-    final String notes = widget.bookingDetails['notes'] ?? '';
+    final service = widget.bookingData['service'] as ServiceItem;
+    final pro = widget.bookingData['professional'] as Professional;
+    final scheduledDate = widget.bookingData['scheduledDate'] as DateTime;
+    final timeSlot = widget.bookingData['timeSlot'] as String;
+    final address = widget.bookingData['address'] as String;
+    final notes = widget.bookingData['notes'] as String;
 
-    const int appFee = 2000;
     final int subtotal = service.price;
+    const int appFee = 5000;
     final int total = subtotal + appFee;
 
     return Scaffold(
-      backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: const Text('Metode Pembayaran'),
+        title: const Text('Pembayaran Pemesanan'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Rincian Pesanan
+            // Kartu Ringkasan Pesanan
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppTheme.primaryLight.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.border),
+                border: Border.all(color: AppTheme.primary.withValues(alpha: 0.2)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Ringkasan Jadwal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(service.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      Text(
+                        IndonesiaData.formatRupiah(service.price),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primary),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 20, color: AppTheme.border),
                   Row(
                     children: [
-                      const Icon(Icons.handyman_outlined, size: 16, color: AppTheme.primary),
-                      const SizedBox(width: 8),
-                      Expanded(child: Text(service.title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600))),
+                      const Icon(Icons.calendar_today_rounded, size: 14, color: AppTheme.textSecondary),
+                      const SizedBox(width: 6),
+                      Text(
+                        '${IndonesiaData.formatDate(scheduledDate)} • $timeSlot',
+                        style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.person_outline, size: 16, color: AppTheme.textSecondary),
-                      const SizedBox(width: 8),
-                      Text('Teknisi: ${pro.name}', style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.event_outlined, size: 16, color: AppTheme.textSecondary),
-                      const SizedBox(width: 8),
-                      Text('${IndonesiaData.formatDate(scheduledDate)} • $timeSlot', style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
+                      const Icon(Icons.location_on_rounded, size: 14, color: AppTheme.textSecondary),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          address,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                        ),
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
             // Pilihan Metode Pembayaran
             const Text(
@@ -217,12 +281,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
             onPressed: _isProcessing
                 ? null
                 : () async {
-                    final router = GoRouter.of(context);
                     setState(() => _isProcessing = true);
-                    await Future.delayed(const Duration(seconds: 1));
+                    await Future.delayed(const Duration(milliseconds: 800));
                     if (!mounted) return;
 
-                    final newBookingId = 'FIXY-ID-${Random().nextInt(90000) + 10000}';
+                    final newBookingId = 'FINEHOME-ID-${Random().nextInt(90000) + 10000}';
                     final selectedMethodName = IndonesiaData.paymentMethods.firstWhere(
                       (m) => m['id'] == _selectedMethodId,
                     )['name'] as String;
@@ -243,9 +306,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     );
 
                     AppState().addBooking(newBooking);
-
                     setState(() => _isProcessing = false);
-                    router.go('/booking-confirmation', extra: newBooking);
+
+                    // Tampilkan Dialog Cari Teknisi dan Auto Redirect ke Peta!
+                    _showSearchingDialogAndRedirect(newBooking);
                   },
             child: _isProcessing
                 ? const SizedBox(

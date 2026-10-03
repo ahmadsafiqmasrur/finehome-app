@@ -1,14 +1,18 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'routes/app_router.dart';
 import 'theme/app_theme.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const FixyIndonesiaApp());
+  await initializeDateFormatting('id_ID', null);
+  runApp(const FineHomeApp());
 }
 
-class FixyIndonesiaApp extends StatelessWidget {
-  const FixyIndonesiaApp({super.key});
+
+class FineHomeApp extends StatelessWidget {
+  const FineHomeApp({super.key});
 
   @override
   Widget build(BuildContext context) {

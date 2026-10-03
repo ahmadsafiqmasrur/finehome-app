@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../data/indonesia_data.dart';
 import '../models/models.dart';
@@ -107,7 +107,7 @@ class LocationHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Pilih Wilayah Layanan Fixy',
+                    'Pilih Wilayah Layanan FineHome',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(

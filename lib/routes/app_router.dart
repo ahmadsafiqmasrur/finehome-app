@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../data/indonesia_data.dart';
 import '../models/models.dart';
@@ -74,7 +74,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final serviceId = state.pathParameters['serviceId'] ?? 'srv-ac-1';
         final proId = state.uri.queryParameters['proId'];
-        return BookingScreen(serviceId: serviceId, initialProfessionalId: proId);
+        return BookingScreen(serviceId: serviceId, proId: proId);
       },
     ),
     GoRoute(
@@ -89,7 +89,7 @@ final GoRouter appRouter = GoRouter(
               'address': 'Jl. Senopati No. 42, Kebayoran Baru, Jakarta Selatan',
               'notes': '',
             };
-        return PaymentScreen(bookingDetails: details);
+        return PaymentScreen(bookingData: details);
       },
     ),
     GoRoute(
@@ -106,14 +106,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/professional-registration',
       builder: (context, state) => Scaffold(
-        appBar: AppBar(title: const Text('Daftar Mitra Teknisi Fixy')),
+        appBar: AppBar(title: const Text('Daftar Mitra Teknisi FineHome')),
         body: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Bergabung Jadi Mitra Teknisi Fixy Indonesia 🛠️',
+                'Bergabung Jadi Mitra Teknisi FineHome Indonesia 🛠️',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -150,7 +150,7 @@ final GoRouter appRouter = GoRouter(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Pendaftaran mitra berhasil diajukan! Tim Fixy akan menghubungi Anda via WhatsApp.'),
+                        content: Text('Pendaftaran mitra berhasil diajukan! Tim FineHome akan menghubungi Anda via WhatsApp.'),
                       ),
                     );
                     context.pop();

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../services/app_state.dart';
 import '../theme/app_theme.dart';
@@ -79,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Dompet FixyPay & Kupon Diskon
+            // Dompet FineHomePay & Kupon Diskon
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -217,7 +217,7 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 32),
-            const Text('Fixy Indonesia v1.0.0 (Build ID)', style: TextStyle(fontSize: 11, color: AppTheme.textMuted)),
+            const Text('FineHome Indonesia v1.0.0 (Build ID)', style: TextStyle(fontSize: 11, color: AppTheme.textMuted)),
             const SizedBox(height: 20),
           ],
         ),

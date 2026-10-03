@@ -3,7 +3,7 @@ import 'package:fixy_indonesia/main.dart';
 
 void main() {
   testWidgets('Fixy Indonesia smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(const FixyIndonesiaApp());
-    expect(find.byType(FixyIndonesiaApp), findsOneWidget);
+    await tester.pumpWidget(const FineHomeApp());
+    expect(find.byType(FineHomeApp), findsOneWidget);
   });
 }

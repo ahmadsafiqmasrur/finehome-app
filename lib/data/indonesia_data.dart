@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/models.dart';
 
@@ -472,7 +472,7 @@ class IndonesiaData {
       rating: 4.8,
       date: '1 minggu lalu',
       comment:
-          'Hasil sedot tungau kasurnya kotor banget airnya padahal kasur kelihatan bersih. Anak saya alerginya jadi berkurang sejak disedot tim Fixy. Mantap!',
+          'Hasil sedot tungau kasurnya kotor banget airnya padahal kasur kelihatan bersih. Anak saya alerginya jadi berkurang sejak disedot tim FineHome. Mantap!',
       serviceName: 'Deep Cleaning Kasur & Sofa',
     ),
   ];
@@ -534,7 +534,7 @@ class IndonesiaData {
 
   // Initial Mock Booking
   static Booking get sampleActiveBooking => Booking(
-        id: 'FIXY-ID-88219',
+        id: 'FINEHOME-ID-88219',
         service: services[0],
         professional: professionals[0],
         scheduledDate: DateTime.now().add(const Duration(hours: 2)),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import '../data/indonesia_data.dart';
 import '../models/models.dart';
 
@@ -74,7 +74,7 @@ class AppState extends ChangeNotifier {
       ChatMessage(
         id: 'msg-1',
         senderName: 'Budi Santoso',
-        message: 'Halo Selamat siang Pak Aditya, saya Budi teknisi AC Fixy yang ditugaskan.',
+        message: 'Halo Selamat siang Pak Aditya, saya Budi teknisi AC FineHome yang ditugaskan.',
         timestamp: DateTime.now().subtract(const Duration(minutes: 15)),
         isFromUser: false,
       ),

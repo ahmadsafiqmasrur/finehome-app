@@ -14,6 +14,9 @@ class ServiceCategory {
     required this.icon,
     required this.color,
   });
+
+  String get name => title;
+  int get itemCount => 6;
 }
 
 class ServiceItem {
@@ -48,6 +51,9 @@ class ServiceItem {
     this.isPopular = false,
     this.isEmergencyAvailable = false,
   });
+
+  String get imageUrl => 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500';
+  String get duration => '$estimatedDurationMinutes menit';
 }
 
 class Professional {
