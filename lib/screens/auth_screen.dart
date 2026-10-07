@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
 
@@ -37,7 +37,7 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
                 color: AppTheme.primary,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.handyman_rounded, color: Colors.white, size: 20),
+              child: ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.asset('assets/images/logo.png', width: 24, height: 24)),
             ),
             const SizedBox(width: 8),
             const Text(
