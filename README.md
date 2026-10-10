@@ -107,5 +107,5 @@ Didistribusikan di bawah lisensi MIT. Lihat file LICENSE untuk informasi lebih l
 ---
 
 <p align=center>
-  Dibuat dengan ❤️ untuk kemudahan layanan rumah tangga di Indonesia.
+ Developed with ❤️ by Ahmad Safiq Masrur.
 </p>
