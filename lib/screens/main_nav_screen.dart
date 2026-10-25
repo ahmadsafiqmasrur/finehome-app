@@ -66,7 +66,7 @@ class _MainNavScreenState extends State<MainNavScreen> {
             NavigationDestination(
               icon: Icon(Icons.map_outlined),
               selectedIcon: Icon(Icons.map_rounded, color: AppTheme.primary),
-              label: 'Peta Tukang',
+              label: 'Maps',
             ),
             NavigationDestination(
               icon: Icon(Icons.receipt_long_outlined),
