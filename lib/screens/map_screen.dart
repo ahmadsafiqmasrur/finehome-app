@@ -337,51 +337,6 @@ class _MapScreenState extends State<MapScreen> {
             ],
           ),
 
-          // Header Top
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.location_on_rounded, color: AppTheme.primary),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text('Wilayah Terpilih', style: TextStyle(fontSize: 10, color: AppTheme.textMuted)),
-                            Text(
-                              '${state.selectedCity.name}, ${state.selectedCity.province}',
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuButton<IndonesianCity>(
-                        icon: const Icon(Icons.swap_horiz_rounded, color: AppTheme.primary),
-                        tooltip: 'Ganti Wilayah',
-                        onSelected: _moveToCity,
-                        itemBuilder: (context) {
-                          return IndonesiaData.cities.map((city) {
-                            return PopupMenuItem(
-                              value: city,
-                              child: Text(city.name),
-                            );
-                          }).toList();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
 
           // Floating Button GPS Centering
           Positioned(
