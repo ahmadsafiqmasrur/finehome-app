@@ -15,9 +15,9 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
-  String _selectedTimeSlot = IndonesiaData.timeSlots[1];
-  final TextEditingController _addressController = TextEditingController();
+DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
+final String _selectedTimeSlot = 'Fleksibel';
+final TextEditingController _addressController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
 
   late ServiceItem _service;
@@ -135,35 +135,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
             const SizedBox(height: 20),
 
-            // Pilih Slot Waktu
-            const Text(
-              'Pilih Waktu Kedatangan Teknisi',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: IndonesiaData.timeSlots.map((slot) {
-                final isSelected = _selectedTimeSlot == slot;
-                return ChoiceChip(
-                  label: Text(slot),
-                  selected: isSelected,
-                  selectedColor: AppTheme.primaryLight,
-                  labelStyle: TextStyle(
-                    color: isSelected ? AppTheme.primary : AppTheme.textPrimary,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                    fontSize: 12,
-                  ),
-                  onSelected: (val) {
-                    if (val) setState(() => _selectedTimeSlot = slot);
-                  },
-                );
-              }).toList(),
-            ),
-
-            const SizedBox(height: 20),
-
+            
             // Alamat Lengkap
             const Text(
               'Alamat Rumah / Lokasi Pengerjaan',
